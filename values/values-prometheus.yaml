@@ -1,0 +1,23 @@
+grafana:
+  adminUser: admin
+  adminPassword: ""
+  ingress:
+    enabled: true
+    hosts:
+      - dashboard.sotongpt.soton.ac.uk
+    path: /
+    pathType: Prefix
+    ingressClassName: traefik
+  service:
+    type: ClusterIP
+  additionalDataSources:
+    - name: Loki
+      type: loki
+      url: http://loki.monitoring.svc.cluster.local:3100
+      access: proxy
+      isDefault: false
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+alertmanager:
+  enabled: true
