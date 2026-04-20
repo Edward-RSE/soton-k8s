@@ -14,6 +14,13 @@ loki:
         index:
           prefix: index_
           period: 24h
+# Disable the components associated with Simple Scalable mode
+read:
+  replicas: 0
+write:
+  replicas: 0
+backend:
+  replicas: 0
 singleBinary:
   replicas: 1
   persistence:
