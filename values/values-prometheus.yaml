@@ -18,6 +18,7 @@ grafana:
       isDefault: false
 prometheus:
   prometheusSpec:
+    serviceMonitorNamespaceSelector: {}
     serviceMonitorSelectorNilUsesHelmValues: false
 alertmanager:
   enabled: true
