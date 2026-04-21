@@ -9,11 +9,15 @@ helm repo update
 # Create monitoring namespace
 kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
 
-# Deploy Loki chart with Promtail enabled as a sub-chart
+# Deploy Loki chart
 helm upgrade --install loki grafana/loki \
   --namespace monitoring \
-  --set promtail.enabled=true \
   -f values/values-loki.yaml
+
+# Deploy promtail chart
+helm upgrade --install promtail grafana/promtail \
+  --namespace monitoring \
+  -f values/values-promtail.yaml
 
 # Deploy Kube-Promethus-Grafana stack for monitoring the cluster
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack \
