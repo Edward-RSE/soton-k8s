@@ -4,6 +4,7 @@ set -e
 # Adding Helm repositories.
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
+helm repo add jetstack https://charts.jetstack.io
 helm repo update
 
 # Create monitoring namespace
@@ -23,3 +24,10 @@ helm upgrade --install promtail grafana/promtail \
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
   -f values/values-prometheus.yaml
+
+# Deploy certificate manager
+helm upgrade --install cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --set crds.enabled=true
+
