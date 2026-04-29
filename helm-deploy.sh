@@ -5,6 +5,7 @@ set -e
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add headlamp https://kubernetes-sigs.github.io/headlamp/
+helm repo add jetstack https://charts.jetstack.io
 helm repo update
 
 # Create monitoring namespace
@@ -30,3 +31,9 @@ helm upgrade --install prometheus prometheus-community/kube-prometheus-stack \
 helm upgrade --install headlamp headlamp/headlamp \
   --namespace headlamp \
   -f values/values-headlamp.yaml
+
+# Deploy certificate manager
+helm upgrade --install cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --set crds.enabled=true
