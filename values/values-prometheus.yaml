@@ -5,6 +5,7 @@ grafana:
     enabled: true
     hosts:
       - dashboard.sotongpt.soton.ac.uk
+      - grafana.sotongpt.soton.ac.uk
     path: /
     pathType: Prefix
     ingressClassName: traefik
