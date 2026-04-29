@@ -5,4 +5,4 @@ ingress:
     - host: headlamp.sotongpt.soton.ac.uk
       paths:
         - path: /
-          pathType: Prefix
+          type: ImplementationSpecific

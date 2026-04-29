@@ -11,6 +11,7 @@ helm repo update
 # Create monitoring namespace
 kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
 kubectl create namespace headlamp --dry-run=client -o yaml | kubectl apply -f -
+kubectl create namespace cert-manager --dry-run=client -o yaml | kubectl apply -f -
 
 # Deploy Loki chart
 helm upgrade --install loki grafana/loki \
@@ -35,5 +36,4 @@ helm upgrade --install headlamp headlamp/headlamp \
 # Deploy certificate manager
 helm upgrade --install cert-manager jetstack/cert-manager \
   --namespace cert-manager \
-  --create-namespace \
-  --set crds.enabled=true
+  -f values/values-cert-manager.yaml
