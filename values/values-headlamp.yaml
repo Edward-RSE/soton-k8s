@@ -1,0 +1,8 @@
+replicaCount: 1
+ingress:
+  enabled: true
+  hosts:
+    - host: headlamp.sotongpt.soton.ac.uk
+      paths:
+        - path: /
+          pathType: Prefix
