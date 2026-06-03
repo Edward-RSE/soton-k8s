@@ -1,0 +1,14 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    service:
+      spec:
+        externalTrafficPolicy: Local
+    additionalArguments:
+      - "--entrypoints.web.forwardedHeaders.trustedIPs=152.78.118.247,152.78.45.249"
+      - "--entrypoints.websecure.forwardedHeaders.trustedIPs=152.78.118.247,152.78.45.249"
+
