@@ -28,6 +28,11 @@ helm upgrade --install prometheus prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
   -f values/values-prometheus.yaml
 
+# Deploy blackbox, which is an exporter for prometheus
+helm upgrade --install blackbox-exporter prometheus-community/prometheus-blackbox-exporter \
+  --namespace monitoring \
+  --set serviceMonitor.enabled=true
+
 # Deploy Headlamp which lets you control the cluster
 helm upgrade --install headlamp headlamp/headlamp \
   --namespace headlamp \
