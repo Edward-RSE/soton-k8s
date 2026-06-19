@@ -1,4 +1,6 @@
 replicaCount: 1
+nodeSelector:
+  kubernetes.io/hostname: srv04885
 ingress:
   enabled: true
   hosts:
@@ -6,3 +8,20 @@ ingress:
       paths:
         - path: /
           type: ImplementationSpecific
+  tls:
+    - secretName: srv04885-tls
+      hosts:
+        - headlamp.sotongpt.soton.ac.uk
+volumes:
+  - name: kubeconfigs
+    secret:
+      secretName: headlamp-kubeconfigs
+      items:
+        - key: headlamp-config.yaml
+          path: config
+volumeMounts:
+    - name: kubeconfigs
+      mountPath: /home/headlamp/.config/Headlamp/kubeconfigs
+config:
+    kubeConfigPath: /home/headlamp/.config/Headlamp/kubeconfigs/config
+

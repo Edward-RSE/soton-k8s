@@ -4,11 +4,14 @@ grafana:
   ingress:
     enabled: true
     hosts:
-      - dashboard.sotongpt.soton.ac.uk
       - grafana.sotongpt.soton.ac.uk
     path: /
     pathType: Prefix
     ingressClassName: traefik
+    tls:
+        - secretName: srv04885-tls
+          hosts:
+            - grafana.sotongpt.soton.ac.uk
   service:
     type: ClusterIP
   additionalDataSources:
