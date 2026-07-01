@@ -1,0 +1,42 @@
+mode: deployment
+image:
+  repository: "otel/opentelemetry-collector-contrib"
+nodeSelector:
+  kubernetes.io/hostname: srv04885
+config:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+  exporters:
+    prometheus:
+      endpoint: 0.0.0.0:8889
+    debug:
+      verbosity: detailed
+  service:
+    pipelines:
+      traces:
+        receivers: [otlp]
+        exporters: [debug]
+      metrics:
+        receivers: [otlp]
+        exporters: [prometheus, debug]
+      logs:
+        receivers: [otlp]
+        exporters: [debug]
+ports:
+  prometheus:
+    enabled: true
+    containerPort: 8889
+    servicePort: 8889
+    protocol: TCP
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi

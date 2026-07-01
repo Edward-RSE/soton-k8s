@@ -4,8 +4,10 @@ set -e
 # Adding Helm repositories.
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
 helm repo add headlamp https://kubernetes-sigs.github.io/headlamp/
 helm repo add jetstack https://charts.jetstack.io
+helm repo add longhorn https://charts.longhorn.io
 helm repo update
 
 # Create monitoring namespace
@@ -33,6 +35,11 @@ helm upgrade --install blackbox-exporter prometheus-community/prometheus-blackbo
   --namespace monitoring \
   --set serviceMonitor.enabled=true
 
+# Deploy an OpenTelemetry collector we can use for Prometheus
+helm upgrade --install otel-collector open-telemetry/opentelemetry-collector \
+  --namespace monitoring \
+  -f values/values-otel.yaml
+
 # Deploy Headlamp which lets you control the cluster
 helm upgrade --install headlamp headlamp/headlamp \
   --namespace headlamp \
@@ -42,3 +49,10 @@ helm upgrade --install headlamp headlamp/headlamp \
 helm upgrade --install cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   -f values/values-cert-manager.yaml
+
+# Deploy Longhorn, used for storage
+helm install longhorn longhorn/longhorn \
+  --namespace longhorn-system \
+  --create-namespace \
+  --set defaultSettings.defaultDataPath="/srv/longhorn"
+
