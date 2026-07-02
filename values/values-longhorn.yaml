@@ -1,0 +1,7 @@
+persistence:
+    defaultClass: true
+    defaultclassReplicaCount: 3
+    reclaimPolicy: Delete
+defaultSettings:
+  defaultDataPath: /var/lib/longhorn-data
+

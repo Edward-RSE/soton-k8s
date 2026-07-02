@@ -10,10 +10,16 @@ helm repo add jetstack https://charts.jetstack.io
 helm repo add longhorn https://charts.longhorn.io
 helm repo update
 
-# Create monitoring namespace
+# Create namespaces for deployments
 kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
 kubectl create namespace headlamp --dry-run=client -o yaml | kubectl apply -f -
 kubectl create namespace cert-manager --dry-run=client -o yaml | kubectl apply -f -
+kubectl create namespace longhorn --dry-run=client -o yaml | kubectl apply -f -
+
+# Deploy Longhorn, used for storage
+helm install longhorn longhorn/longhorn \
+  --namespace longhorn-system \
+  -f values/values-longhorn.yaml
 
 # Deploy Loki chart
 helm upgrade --install loki grafana/loki \
@@ -49,10 +55,4 @@ helm upgrade --install headlamp headlamp/headlamp \
 helm upgrade --install cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   -f values/values-cert-manager.yaml
-
-# Deploy Longhorn, used for storage
-helm install longhorn longhorn/longhorn \
-  --namespace longhorn-system \
-  --create-namespace \
-  --set defaultSettings.defaultDataPath="/srv/longhorn"
 
