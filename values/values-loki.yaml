@@ -14,6 +14,18 @@ loki:
         index:
           prefix: index_
           period: 24h
+
+  # Enable retention and compaction
+  limits_config:
+    retention_period: 168h # Retain logs for 7 days
+  compactor:
+    working_directory: /var/loki/compactor
+    compaction_interval: 10m
+    retention_enabled: true
+    retention_delete_delay: 2h
+    retention_delete_worker_count: 30
+    delete_request_store: filesystem
+
 # Disable the components associated with Simple Scalable mode
 read:
   replicas: 0
@@ -28,4 +40,4 @@ singleBinary:
     storageClassName: longhorn
     accessModes:
       - ReadWriteOnce
-    size: 32Gi
+    size: 64Gi
