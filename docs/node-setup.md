@@ -58,9 +58,11 @@ sudo bash
 arch=x86_64 && export arch
 distro=rhel9 && export distro
 
-dnf install kernel-devel-matched kernel-headers subscription-manager repos --enable=rhel-9-for-$arch-appstream-rpms \
-    subscription-manager repos --enable=rhel-9-for-$arch-baseos-rpms  \
-    subscription-manager repos --enable=codeready-builder-for-rhel-9-$arch-rpms
+dnf install kernel-devel-matched kernel-headers
+
+subscription-manager repos --enable=rhel-9-for-$arch-appstream-rpms
+subscription-manager repos --enable=rhel-9-for-$arch-baseos-rpms
+subscription-manager repos --enable=codeready-builder-for-rhel-9-$arch-rpms
 
 dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 
