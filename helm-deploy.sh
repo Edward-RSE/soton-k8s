@@ -8,13 +8,22 @@ helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm
 helm repo add headlamp https://kubernetes-sigs.github.io/headlamp/
 helm repo add jetstack https://charts.jetstack.io
 helm repo add longhorn https://charts.longhorn.io
+helm repo add nvidia https://helm.ngc.nvidia.com/nvidia
 helm repo update
 
 # Create namespaces for deployments
 kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
 kubectl create namespace headlamp --dry-run=client -o yaml | kubectl apply -f -
 kubectl create namespace cert-manager --dry-run=client -o yaml | kubectl apply -f -
-kubectl create namespace longhorn --dry-run=client -o yaml | kubectl apply -f -
+kubectl create namespace longhorn-system --dry-run=client -o yaml | kubectl apply -f -
+kubectl create namespace gpu-operator --dry-run=client -o yaml | kubectl apply -f -
+
+# Deply the NVIDIA GPU operator which seems to be the most reliable way
+# to get GPUs detected by K3s
+helm install --wait --generate-name \
+    --namespace gpu-operator \
+    nvidia/gpu-operator \
+    --version=v26.3.3
 
 # Deploy Longhorn, used for storage
 helm install longhorn longhorn/longhorn \
