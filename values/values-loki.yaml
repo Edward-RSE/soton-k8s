@@ -40,4 +40,4 @@ singleBinary:
     storageClassName: longhorn
     accessModes:
       - ReadWriteOnce
-    size: 64Gi
+    size: 128Gi

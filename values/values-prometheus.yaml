@@ -43,7 +43,7 @@ prometheus:
             - ReadWriteOnce
           resources:
             requests:
-              storage: 50Gi
+              storage: 128Gi
 alertmanager:
   enabled: true
   alertmanagerSpec:
@@ -56,3 +56,9 @@ alertmanager:
           resources:
             requests:
               storage: 2Gi
+prometheus-node-exporter:
+  hostNetwork: false
+  hostPID: true
+  service:
+    port: 9100
+    targetPort: 9100
