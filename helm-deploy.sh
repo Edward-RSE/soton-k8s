@@ -52,7 +52,8 @@ helm upgrade --install nvidia-gpu-exporter nvidia-gpu-exporter/nvidia-gpu-export
   --namespace monitoring \
   --set runtimeClassName=nvidia \
   --set computeApps.enabled=true \
-  --set hostPID=true
+  --set hostPID=true \
+  --set serviceMonitor.enabled=true
 
 # Deploy blackbox, which is an exporter for prometheus
 helm upgrade --install blackbox-exporter prometheus-community/prometheus-blackbox-exporter \
