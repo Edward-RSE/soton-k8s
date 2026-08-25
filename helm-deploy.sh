@@ -10,6 +10,8 @@ helm repo add jetstack https://charts.jetstack.io
 helm repo add longhorn https://charts.longhorn.io
 helm repo add nvidia https://helm.ngc.nvidia.com/nvidia
 helm repo add nvidia-gpu-exporter https://utkuozdemir.github.io/nvidia_gpu_exporter
+helm repo add cnpg https://cloudnative-pg.github.io/charts
+helm repo add minio https://charts.min.io/
 helm repo update
 
 # Create namespaces for deployments
@@ -18,6 +20,8 @@ kubectl create namespace headlamp --dry-run=client -o yaml | kubectl apply -f -
 kubectl create namespace cert-manager --dry-run=client -o yaml | kubectl apply -f -
 kubectl create namespace longhorn-system --dry-run=client -o yaml | kubectl apply -f -
 kubectl create namespace gpu-operator --dry-run=client -o yaml | kubectl apply -f -
+kubectl create namespace cnpg-system --dry-run=client -o yaml | kubectl apply -f -
+kubectl create namespace minio --dry-run=client -o yaml | kubectl apply -f -
 
 # Deploy the NVIDIA GPU operator which seems to be the most reliable way
 # to get GPUs detected by K3s
@@ -25,7 +29,6 @@ helm install --wait --generate-name \
     --namespace gpu-operator \
     nvidia/gpu-operator \
     --version=v26.3.3
-
 
 # Deploy Longhorn, used for storage
 helm install longhorn longhorn/longhorn \
@@ -74,4 +77,14 @@ helm upgrade --install headlamp headlamp/headlamp \
 helm upgrade --install cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   -f values/values-cert-manager.yaml
+
+# Deploy CNPG (cloud native postgres)
+helm upgrade --install cnpg cnpg/cloudnative-pg \
+	--namespace cnpg-system \
+	--set monitoring.podMonitorEnabled=true
+
+# Deploy MinIO for a simple backup on /srv
+helm upgrade --install minio minio/minio \
+  --namespace minio \
+  -f values/values-minio.yaml
 

@@ -1,0 +1,20 @@
+# Root administrative credentials
+existingSecret: "minio-root-secret"
+# Switch to distributed mode to span multiple nodes
+mode: distributed
+replicas: 4 
+# Enable automatic local provisioning
+persistence:
+  enabled: true
+  storageClass: "local-path"
+  size: 256Gi
+# Automatic bucket creation
+buckets:
+  - name: longhorn-backups
+    policy: none
+    purge: false
+# Resource allocation
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 250m
